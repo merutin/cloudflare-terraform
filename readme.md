@@ -9,6 +9,7 @@ cloudflareのリソースをterraformで作成するための検証用リポジ�
 - proxiedをONに設定
   - ONの場合はttlを1にする必要がある
 - Aレコード、TXTレコードの作成
+- 複数のIPアドレスの展開
 
 ```
 terraform plan -var-file sample.tfvars

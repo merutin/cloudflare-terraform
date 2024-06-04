@@ -44,3 +44,17 @@ resource "cloudflare_record" "txt" {
   ttl     = 300
   type    = "TXT"
 }
+
+variable "ips" {
+  default = ["192.168.1.1", "192.168.1.2", "192.168.1.3"]
+}
+
+resource "cloudflare_record" "loop" {
+  zone_id  = var.zone_id
+  name     = "terraform.loop.jp"
+  ttl      = 300
+  type     = "A"
+
+  for_each = toset(var.ips)
+  value    = each.value
+}
