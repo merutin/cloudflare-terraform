@@ -25,7 +25,7 @@ resource "cloudflare_record" "example" {
   value   = "192.0.2.1"
   type    = "A"
   ttl     = 1
-  proxied = true
+  proxied = var.proxied
 }
 
 resource "cloudflare_record" "example2" {

@@ -12,5 +12,5 @@ cloudflareのリソースをterraformで作成するための検証用リポジ�
 - 複数のIPアドレスの展開
 
 ```
-terraform plan -var-file sample.tfvars
+terraform plan -var-file terraform.tfvars
 ```

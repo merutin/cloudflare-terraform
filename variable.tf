@@ -9,3 +9,8 @@ variable "zone_id" {
 variable "account_id" {
   type = string
 }
+
+variable "proxied" {
+  type = bool
+  default = true
+}
