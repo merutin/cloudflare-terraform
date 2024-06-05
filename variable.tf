@@ -11,6 +11,6 @@ variable "account_id" {
 }
 
 variable "proxied" {
-  type = bool
+  type    = bool
   default = true
 }

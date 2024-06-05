@@ -19,22 +19,18 @@ resource "cloudflare_zone_dnssec" "example" {
 }
 
 # Create a record
+locals {
+  ips = ["192.0.2.1", "192.0.2.2"]
+}
 resource "cloudflare_record" "example" {
   zone_id = var.zone_id
   name    = "terraform"
-  value   = "192.0.2.1"
   type    = "A"
   ttl     = 1
   proxied = var.proxied
-}
 
-resource "cloudflare_record" "example2" {
-  zone_id = var.zone_id
-  name    = "terraform"
-  value   = "192.0.2.2"
-  type    = "A"
-  ttl     = 1
-  proxied = true
+  for_each = toset(local.ips)
+  value    = each.value
 }
 
 resource "cloudflare_record" "example_root" {
@@ -59,10 +55,10 @@ variable "ips" {
 }
 
 resource "cloudflare_record" "loop" {
-  zone_id  = var.zone_id
-  name     = "terraform.loop.jp"
-  ttl      = 300
-  type     = "A"
+  zone_id = var.zone_id
+  name    = "terraform.loop.jp"
+  ttl     = 300
+  type    = "A"
 
   for_each = toset(var.ips)
   value    = each.value
@@ -99,7 +95,7 @@ resource "cloudflare_ruleset" "cache_settings_example" {
       serve_stale {
         disable_stale_while_updating = true
       }
-      respect_strong_etags = true
+      respect_strong_etags       = true
       origin_error_page_passthru = false
     }
     expression  = "(http.host eq \"example.host.com\")"
