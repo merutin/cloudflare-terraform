@@ -58,3 +58,43 @@ resource "cloudflare_record" "loop" {
   for_each = toset(var.ips)
   value    = each.value
 }
+
+resource "cloudflare_ruleset" "cache_settings_example" {
+  zone_id     = var.zone_id
+  name        = "set cache settings"
+  description = "set cache settings for the request"
+  kind        = "zone"
+  phase       = "http_request_cache_settings"
+
+  rules {
+    action = "set_cache_settings"
+    action_parameters {
+      edge_ttl {
+        mode    = "override_origin"
+        default = 60
+        status_code_ttl {
+          status_code = 200
+          value       = 50
+        }
+        status_code_ttl {
+          status_code_range {
+            from = 201
+            to   = 300
+          }
+          value = 30
+        }
+      }
+      browser_ttl {
+        mode = "respect_origin"
+      }
+      serve_stale {
+        disable_stale_while_updating = true
+      }
+      respect_strong_etags = true
+      origin_error_page_passthru = false
+    }
+    expression  = "(http.host eq \"example.host.com\")"
+    description = "set cache settings rule"
+    enabled     = true
+  }
+}
