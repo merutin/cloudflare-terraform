@@ -37,6 +37,15 @@ resource "cloudflare_record" "example2" {
   proxied = true
 }
 
+resource "cloudflare_record" "example_root" {
+  zone_id = var.zone_id
+  name    = "@"
+  value   = "192.0.2.2"
+  type    = "A"
+  ttl     = 1
+  proxied = true
+}
+
 resource "cloudflare_record" "txt" {
   zone_id = var.zone_id
   name    = "terraform.jp"
